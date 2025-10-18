@@ -1,0 +1,5 @@
+[tools]
+direnv = "latest"
+k9s = "latest"
+kubectl = "latest"
+kubens = "latest"
