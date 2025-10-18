@@ -1,23 +1,22 @@
-🧠 K3s High-Availability Cluster
+# ☸️ K3s High-Availability Cluster
 
-A lightweight yet highly available K3s Kubernetes cluster designed for homelab and edge deployments.
-This setup combines PostgreSQL, HAProxy, and Keepalived to provide a fully redundant control-plane endpoint with Cilium as the CNI.
+A lightweight yet highly available **K3s Kubernetes cluster** designed for homelab and edge deployments.  
+This setup combines **PostgreSQL**, **HAProxy**, and **Keepalived** to provide a fully redundant control-plane endpoint with **Cilium** as the CNI.
 
-🚀 Overview
+---
 
-This cluster runs a high-availability (HA) K3s control plane with:
+## 🚀 Overview
 
-2 PostgreSQL nodes providing a redundant backend database
+This cluster runs a **high-availability (HA) K3s control plane** with:
 
-HAProxy + Keepalived on the same nodes for API server load balancing and failover
+- 🐘 **2 PostgreSQL nodes** — providing a redundant backend database  
+- ⚙️ **HAProxy + Keepalived** — handle API server load balancing and failover  
+- ☸️ **3 K3s control-plane nodes** — connected to the shared PostgreSQL backend  
+- 🧬 **Cilium** — as the CNI (Container Network Interface)
 
-3 K3s control-plane nodes connected to the shared PostgreSQL backend
+---
 
-Cilium as the CNI (Container Network Interface)
-
-The architecture ensures fault tolerance, automatic failover, and stable networking for all workloads.
-
-🎯 Architecture Summary
+## 🎯 Architecture Summary
 
 ```text
 Clients (kubectl, nodes, apps)
@@ -41,48 +40,46 @@ pg-node-1    pg-node-2
   :6443 each
 ```
 
-🧩 Components
+## 🧩 Components
 
-🐘 PostgreSQL (K3s Backend)
+### 🐘 PostgreSQL (K3s Backend)
+- Provides a **shared datastore** for all K3s control-plane nodes.  
+- Runs in a **primary/replica** configuration for redundancy.  
+- Ensures no single point of failure for Kubernetes state.
 
-Provides a shared datastore for the K3s control planes.
+### ⚙️ HAProxy + Keepalived
+- **HAProxy** distributes incoming traffic to all control-plane nodes on port `6443`.  
+- **Keepalived** provides a **Virtual IP (VIP)** — `10.10.10.150` — which automatically fails over between both HAProxy nodes.  
+- Together, they ensure the Kubernetes API is always available.
 
-Both nodes replicate the K3s data, ensuring no single point of failure.
+### ☸️ K3s Control Plane
+- Three control-plane nodes (`cp1`, `cp2`, `cp3`).  
+- Each connects to PostgreSQL for consistent cluster state.  
+- Fully HA setup with no embedded etcd dependency.
 
-PostgreSQL runs in a primary/replica setup.
+### 🧬 Cilium (CNI)
+- Provides **eBPF-powered networking and security**.  
+- Replaces Flannel for improved performance and observability.  
+- Enables **Hubble** for network flow visibility and debugging.
 
-⚙️ HAProxy + Keepalived
+## ⚙️ IP Scheme
 
-HAProxy load-balances incoming K3s API requests (:6443) across all control-plane nodes.
+| Role             | Hostname   | IP Address     | Notes                         |
+|------------------|-------------|----------------|--------------------------------|
+| 🟢 VIP (Keepalived) | -           | **10.10.10.150** | Floating virtual IP             |
+| 🐘 HAProxy / DB     | pg-node-1   | 10.10.10.151   | Keepalived MASTER + HAProxy     |
+| 🐘 HAProxy / DB     | pg-node-2   | 10.10.10.152   | Keepalived BACKUP + HAProxy     |
+| ☸️ K3s Node         | cp1         | 10.10.10.153   | Control plane node              |
+| ☸️ K3s Node         | cp2         | 10.10.10.154   | Control plane node              |
+| ☸️ K3s Node         | cp3         | 10.10.10.155   | Control plane node              |
 
-Keepalived provides a Virtual IP (VIP) — 10.10.10.150 — which floats between both HAProxy nodes.
 
-Ensures continuous API availability even if one node fails.
 
-☸️ K3s Control Plane
+## 🧠 Key Benefits
 
-3 nodes: cp1, cp2, and cp3
-
-All control-plane nodes connect to PostgreSQL for state synchronization.
-
-Each runs the K3s API server and scheduler.
-
-🧬 Cilium (CNI)
-
-Provides eBPF-powered networking and security.
-
-Replaces Flannel for high-performance network policies and observability.
-
-Enables direct routing and Hubble for network visibility.
-
-⚙️ IP Scheme
-```text
-Role	Hostname	IP Address	Notes
-VIP (Keepalived)	-	10.10.10.150	Floating virtual IP
-HAProxy / DB	pg-node-1	10.10.10.156	Keepalived MASTER + HAProxy
-HAProxy / DB	pg-node-2	10.10.10.155	Keepalived BACKUP + HAProxy
-K3s Node	cp1	10.10.10.154	Control plane node
-K3s Node	cp2	10.10.10.153	Control plane node
-K3s Node	cp3	10.10.10.151	Control plane node
-```
+- ✅ **Highly Available Kubernetes API**  
+- ✅ **No Single Point of Failure**  
+- ✅ **PostgreSQL-backed Cluster Datastore**  
+- ✅ **eBPF-powered Networking with Cilium**  
+- ✅ **Production-grade Homelab Architecture**
 
