@@ -18,6 +18,8 @@ Cilium as the CNI (Container Network Interface)
 The architecture ensures fault tolerance, automatic failover, and stable networking for all workloads.
 
 🎯 Architecture Summary
+
+```text
 Clients (kubectl, nodes, apps)
          |
          v
@@ -37,8 +39,10 @@ pg-node-1    pg-node-2
    cp1  cp2  cp3
   .154 .153 .151
   :6443 each
+```
 
 🧩 Components
+
 🐘 PostgreSQL (K3s Backend)
 
 Provides a shared datastore for the K3s control planes.
@@ -72,6 +76,7 @@ Replaces Flannel for high-performance network policies and observability.
 Enables direct routing and Hubble for network visibility.
 
 ⚙️ IP Scheme
+```text
 Role	Hostname	IP Address	Notes
 VIP (Keepalived)	-	10.10.10.150	Floating virtual IP
 HAProxy / DB	pg-node-1	10.10.10.156	Keepalived MASTER + HAProxy
@@ -79,3 +84,5 @@ HAProxy / DB	pg-node-2	10.10.10.155	Keepalived BACKUP + HAProxy
 K3s Node	cp1	10.10.10.154	Control plane node
 K3s Node	cp2	10.10.10.153	Control plane node
 K3s Node	cp3	10.10.10.151	Control plane node
+```
+
