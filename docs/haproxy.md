@@ -103,7 +103,7 @@ EOF
 
 ```text
 # Replace 'ens192' with your actual interface name!
-INTERFACE="ens92"  # <-- CHANGE THIS
+INTERFACE="ens192"  # <-- CHANGE THIS
 
 sudo tee /etc/keepalived/keepalived.conf > /dev/null <<EOF
 global_defs {
