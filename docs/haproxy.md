@@ -237,6 +237,9 @@ sudo systemctl status keepalived
 # On master node (should show the VIP):
 ip addr show | grep 10.10.10.150
 
+inet 10.10.10.150/24 scope global secondary ens192:vip
+
+
 # On backup node (should NOT show the VIP initially):
 ip addr show | grep 10.10.10.150
 ```
