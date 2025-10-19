@@ -54,7 +54,7 @@ cat /var/lib/rancher/k3s/server/token
 ```
 
 
-### Install Cilium CLI
+### Cilium CLI
 
 ```text
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
