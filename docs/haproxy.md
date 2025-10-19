@@ -130,7 +130,7 @@ vrrp_instance VI_K3S_API {
     
     authentication {
         auth_type PASS
-        auth_pass K3sSecurePass2024  # Change this to a secure password
+        auth_pass K3sSecurePass  # Change this to a secure password
     }
     
     # The Virtual IP
@@ -183,7 +183,7 @@ vrrp_instance VI_K3S_API {
     
     authentication {
         auth_type PASS
-        auth_pass K3sSecurePass2024  # Must match master password
+        auth_pass K3sSecurePass  # Must match master password
     }
     
     # The Virtual IP
