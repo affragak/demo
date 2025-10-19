@@ -67,11 +67,11 @@ pg-node-1    pg-node-2
 | Role             | Hostname   | IP Address     | Notes                         |
 |------------------|-------------|----------------|--------------------------------|
 | 🟢 VIP (Keepalived) | -           | **10.10.10.150** | Floating virtual IP             |
-| 🐘 HAProxy / DB     | pg-node-1   | 10.10.10.151   | Keepalived MASTER + HAProxy     |
-| 🐘 HAProxy / DB     | pg-node-2   | 10.10.10.152   | Keepalived BACKUP + HAProxy     |
-| ☸️ K3s Node         | cp1         | 10.10.10.153   | Control plane node              |
-| ☸️ K3s Node         | cp2         | 10.10.10.154   | Control plane node              |
-| ☸️ K3s Node         | cp3         | 10.10.10.155   | Control plane node              |
+| 🐘 HAProxy / DB     | pg-node-1   | 10.10.10.156   | Keepalived MASTER + HAProxy     |
+| 🐘 HAProxy / DB     | pg-node-2   | 10.10.10.155   | Keepalived BACKUP + HAProxy     |
+| ☸️ K3s Node         | cp1         | 10.10.10.154   | Control plane node              |
+| ☸️ K3s Node         | cp2         | 10.10.10.153   | Control plane node              |
+| ☸️ K3s Node         | cp3         | 10.10.10.151   | Control plane node              |
 
 
 
