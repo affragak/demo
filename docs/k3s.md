@@ -184,8 +184,7 @@ K3S nodes:
 ```text
 ❯ k get nodes -o wide
 NAME         STATUS   ROLES                  AGE     VERSION        INTERNAL-IP    EXTERNAL-IP    OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
-ubuntu-cp1   Ready    control-plane,master   2d21h   v1.31.6+k3s1   10.10.10.154   10.10.10.154   Ubuntu 24.04.3 LTS   6.8.0-71-generic   containerd://2.0.2-k3s2
-ubuntu-cp2   Ready    control-plane,master   2d20h   v1.31.6+k3s1   10.10.10.153   10.10.10.153   Ubuntu 24.04.3 LTS   6.8.0-85-generic   containerd://2.0.2-k3s2
-ubuntu-cp3   Ready    control-plane,master   2d20h   v1.31.6+k3s1   10.10.10.151   10.10.10.151   Ubuntu 24.04.3 LTS   6.8.0-85-generic   containerd://2.0.2-k3s2
-
+ubuntu-cp1   Ready    control-plane,master   2d21h   v1.34.1+k3s1   10.10.10.154   10.10.10.154   Ubuntu 24.04.3 LTS   6.8.0-71-generic   containerd://2.1.4-k3s2
+ubuntu-cp2   Ready    control-plane,master   2d20h   v1.34.1+k3s1   10.10.10.153   10.10.10.153   Ubuntu 24.04.3 LTS   6.8.0-85-generic   containerd://2.1.4-k3s2
+ubuntu-cp3   Ready    control-plane,master   2d20h   v1.34.1+k3s1   10.10.10.151   10.10.10.151   Ubuntu 24.04.3 LTS   6.8.0-85-generic   containerd://2.1.4-k3s2
 ```
