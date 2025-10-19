@@ -40,7 +40,7 @@ node-external-ip: 10.10.10.154
 ### Installation
 
 ```text
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.31.6+k3s1 sh -
+curl -sfL https://get.k3s.io | sh -
 ```
 
 
