@@ -103,3 +103,52 @@ cilium install -f cilium-values.yaml
 ```
 
 
+### Add additional K3S nodes
+
+```text
+token: TOKEN # Get this from /var/lib/rancher/k3s/server/node-token on first server
+server: https://k3s-vm.uclab8.net:6443  # Connect to the load balancer
+
+# TLS configuration
+tls-san:
+  - 10.10.10.154
+  - 10.10.10.153
+  - 10.10.10.151
+  - "k3s-vm.uclab8.net"
+# Database configuration - use the same master PostgreSQL server as the initial node
+datastore-endpoint: "postgres://k3s:login_password=@10.10.10.156:5432/k3s?sslmode=disable"
+# Disabled components
+disable:
+  - traefik
+  - servicelb
+  - local-storage
+# Network configuration
+flannel-backend: none
+disable-network-policy: true
+# Node configuration
+node-ip: 10.10.10.151  # Change for each node
+node-external-ip: 10.10.10.151  # Change for each node
+```
+
+
+
+### Verify
+
+On the PostgreSQL master, verify that all nodes are connecting to the database:  
+```text
+ubuntu@ubuntu-db1:~$ sudo -u postgres psql -c "SELECT client_addr, usename, application_name, state FROM pg_stat_activity WHERE datname='k3s';"
+
+ client_addr  | usename | application_name | state
+--------------+---------+------------------+-------
+ 10.10.10.154 | k3s     |                  | idle
+ 10.10.10.154 | k3s     |                  | idle
+ 10.10.10.154 | k3s     |                  | idle
+ 10.10.10.151 | k3s     |                  | idle
+ 10.10.10.153 | k3s     |                  | idle
+ 10.10.10.151 | k3s     |                  | idle
+ 10.10.10.153 | k3s     |                  | idle
+ 10.10.10.151 | k3s     |                  | idle
+ 10.10.10.153 | k3s     |                  | idle
+(9 rows)
+```
+
