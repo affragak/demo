@@ -103,7 +103,7 @@ cilium install -f cilium-values.yaml
 ```
 
 
-### Add additional K3S nodes
+### Add K3S nodes
 
 ```text
 token: TOKEN # Get this from /var/lib/rancher/k3s/server/node-token on first server
