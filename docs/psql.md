@@ -127,3 +127,108 @@ SELECT extract(epoch from now() - pg_last_xact_replay_timestamp()) AS lag_second
 The first query should return t (true), confirming the server is in recovery mode.  
 The second query shows how far behind the replica is from the master - ideally this should be very low (less than a second).  
 
+
+### K3S DB 
+
+```text
+ubuntu@ubuntu-db1:~$ sudo -u postgres psql
+psql (17.6 (Ubuntu 17.6-2.pgdg24.04+1))
+Type "help" for help.
+
+postgres=# \l
+                                                 List of databases
+   Name    |  Owner   | Encoding | Locale Provider | Collate |  Ctype  | Locale | ICU Rules |   Access privileges
+-----------+----------+----------+-----------------+---------+---------+--------+-----------+-----------------------
+ k3s       | k3s      | UTF8     | libc            | C.UTF-8 | C.UTF-8 |        |           |
+ postgres  | postgres | UTF8     | libc            | C.UTF-8 | C.UTF-8 |        |           |
+ template0 | postgres | UTF8     | libc            | C.UTF-8 | C.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |         |         |        |           | postgres=CTc/postgres
+ template1 | postgres | UTF8     | libc            | C.UTF-8 | C.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |         |         |        |           | postgres=CTc/postgres
+(4 rows)
+
+postgres=# \c k3s
+You are now connected to database "k3s" as user "postgres".
+k3s=# \dt
+       List of relations
+ Schema | Name | Type  | Owner
+--------+------+-------+-------
+ public | kine | table | k3s
+(1 row)
+
+k3s=# SELECT * FROM pg_tables WHERE schemaname = 'public';
+ schemaname | tablename | tableowner | tablespace | hasindexes | hasrules | hastriggers | rowsecurity
+------------+-----------+------------+------------+------------+----------+-------------+-------------
+ public     | kine      | k3s        |            | t          | f        | f           | f
+(1 row)
+
+k3s=# \d kine
+                                 Table "public.kine"
+     Column      |  Type   | Collation | Nullable |             Default
+-----------------+---------+-----------+----------+----------------------------------
+ id              | bigint  |           | not null | nextval('kine_id_seq'::regclass)
+ name            | text    | C         |          |
+ created         | integer |           |          |
+ deleted         | integer |           |          |
+ create_revision | bigint  |           |          |
+ prev_revision   | bigint  |           |          |
+ lease           | integer |           |          |
+ value           | bytea   |           |          |
+ old_value       | bytea   |           |          |
+Indexes:
+    "kine_pkey" PRIMARY KEY, btree (id)
+    "kine_id_deleted_index" btree (id, deleted)
+    "kine_list_query_index" btree (name, id DESC, deleted)
+    "kine_name_id_index" btree (name, id)
+    "kine_name_index" btree (name)
+    "kine_name_prev_revision_uindex" UNIQUE, btree (name, prev_revision)
+    "kine_prev_revision_index" btree (prev_revision)
+
+k3s=#
+k3s=# SELECT DISTINCT split_part(name, '/', 1) AS resource_type, COUNT(*)
+FROM kine
+WHERE deleted = 0
+GROUP BY resource_type
+ORDER BY resource_type;
+       resource_type       | count
+---------------------------+-------
+                           |  2456
+ compact_rev_key           |     1
+ compact_rev_key_apiserver |     2
+(3 rows)
+
+k3s=#
+k3s=#
+k3s=# SELECT name, created, create_revision
+FROM kine
+WHERE name LIKE '/registry/namespaces/%'
+AND deleted = 0;
+                 name                 | created | create_revision
+--------------------------------------+---------+-----------------
+ /registry/namespaces/cilium-secrets  |       1 |               0
+ /registry/namespaces/default         |       1 |               0
+ /registry/namespaces/kube-node-lease |       1 |               0
+ /registry/namespaces/kube-public     |       1 |               0
+ /registry/namespaces/kube-system     |       1 |               0
+(5 rows)
+
+k3s=#
+k3s=# SELECT name, created
+FROM kine
+WHERE name LIKE '/registry/pods/%'
+AND deleted = 0;
+                            name                             | created
+-------------------------------------------------------------+---------
+ /registry/pods/kube-system/metrics-server-7bc79d68c6-rqsns  |       0
+ /registry/pods/kube-system/cilium-pwjzf                     |       0
+ /registry/pods/kube-system/cilium-envoy-fgtkx               |       0
+ /registry/pods/kube-system/cilium-operator-757859d448-vfb2p |       0
+ /registry/pods/kube-system/cilium-envoy-p9wl5               |       0
+ /registry/pods/kube-system/cilium-ldwnp                     |       0
+ /registry/pods/kube-system/coredns-89d768874-kj5n5          |       0
+ /registry/pods/kube-system/cilium-envoy-xsf6d               |       0
+ /registry/pods/kube-system/cilium-82fml                     |       0
+(9 rows)
+
+k3s=#
+```
