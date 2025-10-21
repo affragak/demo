@@ -89,6 +89,40 @@ uv run nginx-keda.py http://10.10.10.50 240 200
 - `240` - Duration in seconds
 - `200` - Concurrent users
 
+### Real-Time Scaling Events
+
+The load test script monitors pod scaling in real-time:
+
+```
+======================================================================
+KEDA AUTOSCALING LOAD TEST
+======================================================================
+Target URL: http://10.10.10.50
+Duration: 240 seconds
+Concurrent Users: 200
+Initial Pod Count: 3
+======================================================================
+======================================================================
+MONITORING POD SCALING
+======================================================================
+Time (s)   Pods       Requests     Errors     HPA Status
+----------------------------------------------------------------------
+35         6          17923        0          3     6
+🚀 SCALING EVENT: 3 -> 6 pods
+User  3 completed: 543 requests    128        6     6
+User  2 completed: 560 requests
+```
+
+### Scaling Behavior
+
+The test demonstrates effective autoscaling:
+- **Initial State**: 3 pods
+- **Scaling Trigger**: CPU utilization exceeded 40% threshold
+- **Scale Up Time**: 35 seconds (3 → 6 pods)
+- **Requests at Scale Event**: 17,923 requests processed
+- **Final State**: 6 pods maintained throughout test
+- **Load Distribution**: Even distribution across all pods (~15k-21k requests per pod)
+
 ### Test Results
 
 ```
@@ -103,14 +137,6 @@ Requests/sec: 428.07
 Final Pod Count: 6
 ======================================================================
 ```
-
-### Scaling Behavior
-
-The test demonstrates effective autoscaling:
-- **Initial State**: 3 pods
-- **Peak Load**: Scaled to 6 pods in 35 seconds
-- **Trigger**: CPU utilization exceeded 40% threshold
-- **Load Distribution**: Even distribution across all pods (~15k-21k requests per pod)
 
 ## 📊 Pod Distribution
 
@@ -186,3 +212,4 @@ kubectl get pods
 - [KEDA Documentation](https://keda.sh/docs/)
 - [KEDA CPU Scaler](https://keda.sh/docs/latest/scalers/cpu/)
 - [Kubernetes HPA](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+
