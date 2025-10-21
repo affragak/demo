@@ -48,6 +48,34 @@ spec:
 | `pollingInterval` | 10s | Frequency of metric checks |
 | `cpu.value` | 40% | CPU threshold for scaling |
 
+## 📦 Baseline Setup
+
+### Initial Deployment State
+
+Before load testing, the environment was configured with:
+
+**Pods (3 replicas at minimum):**
+```bash
+kubectl get pods
+```
+```
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-8974df4cf-ljcjn   1/1     Running   0          2d1h
+nginx-8974df4cf-xm6dz   1/1     Running   0          2d1h
+nginx-8974df4cf-ztlsm   1/1     Running   0          2d1h
+```
+
+**Service (LoadBalancer):**
+```bash
+kubectl get svc
+```
+```
+NAME    TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+nginx   LoadBalancer   10.43.212.55   10.10.10.50   80:30858/TCP   2d2h
+```
+
+The LoadBalancer exposes Nginx at `10.10.10.50:80`, which serves as the target for load testing.
+
 ## 🧪 Load Testing
 
 ### Running the Test
@@ -158,4 +186,3 @@ kubectl get pods
 - [KEDA Documentation](https://keda.sh/docs/)
 - [KEDA CPU Scaler](https://keda.sh/docs/latest/scalers/cpu/)
 - [Kubernetes HPA](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
-
