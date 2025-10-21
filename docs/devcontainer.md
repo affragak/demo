@@ -1,6 +1,6 @@
 # Development Container Setup
 
-This repository uses a Dev Container configuration with [DevPod](https://devpod.sh/) for consistent development environments across machines. The setup uses **Neovim** as the primary editor, with [Chezmoi](https://www.chezmoi.io/) for dotfile management and [mise](https://mise.jdx.dev/) for tool version management.
+This repository uses a Dev Container configuration with [DevPod](https://devpod.sh/) for consistent development environments across machines. The setup uses Neovim as the primary editor, with [Chezmoi](https://www.chezmoi.io/) for dotfile management and [mise](https://mise.jdx.dev/) for tool version management.
 
 ## Prerequisites
 
@@ -66,7 +66,7 @@ Chezmoi manages your dotfiles at `~/.local/share/chezmoi`:
 
 ```
 ~/.local/share/chezmoi/
-├── setup                    # Initial setup script
+├── setup                   # Initial setup script
 ├── dot_bashrc              # Bash configuration
 ├── dot_zshrc               # Zsh configuration
 ├── dot_config/             # Config directory
