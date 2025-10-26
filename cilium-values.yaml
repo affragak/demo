@@ -25,4 +25,19 @@ debug:
   enabled: true # Enable debug logging
 socketLB:
   hostNamespaceOnly: true # Restrict socket LB to host namespace
-
+hubble:
+  enabled: true
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction
+    enableOpenMetrics: true
+  relay:
+    enabled: true
+  ui:
+    enabled: true
