@@ -1,26 +1,28 @@
-k8sServiceHost: "10.10.10.154"  # The API server IP
-k8sServicePort: "6443"           # The API server port
-kubeProxyReplacement: true       # Replace kube-proxy functionality
+k8sServiceHost: "k3s-vm.uclab8.net" # The API server IP
+k8sServicePort: "6443" # The API server port
+kubeProxyReplacement: true # Replace kube-proxy functionality
 l2announcements:
-  enabled: true                  # Enable L2 announcements for load balancer IPs
+  enabled: true # Enable L2 announcements for load balancer IPs
 externalIPs:
-  enabled: true                  # Enable support for externalIPs
+  enabled: true # Enable support for externalIPs
 k8sClientRateLimit:
-  qps: 50                        # Queries per second limit
-  burst: 200                     # Burst limit
+  qps: 50 # Queries per second limit
+  burst: 200 # Burst limit
 operator:
-  replicas: 1                    # Run a single operator replica
-  rollOutPods: true              # Roll out operator pods when config changes
-rollOutCiliumPods: true          # Roll out Cilium pods when config changes
+  replicas: 1 # Run a single operator replica
+  rollOutPods: true # Roll out operator pods when config changes
+rollOutCiliumPods: true # Roll out Cilium pods when config changes
 gatewayAPI:
-  enabled: true                  # Enable Gateway API support
+  enabled: true # Enable Gateway API support
+  gatewayClass:
+    create: "true"
 envoy:
-  enabled: true                  # Enable Envoy proxy
+  enabled: true # Enable Envoy proxy
   securityContext:
     capabilities:
       keepCapNetBindService: true # Required for Envoy to bind to privileged ports
 debug:
-  enabled: true                  # Enable debug logging
+  enabled: true # Enable debug logging
 socketLB:
-  hostNamespaceOnly: true        # Restrict socket LB to host namespace
+  hostNamespaceOnly: true # Restrict socket LB to host namespace
 
