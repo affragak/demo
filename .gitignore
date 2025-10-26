@@ -1,3 +1,4 @@
+ca.crt
 kubeconfig
 .envrc
 .venv/
