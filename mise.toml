@@ -1,4 +1,5 @@
 [tools]
+cilium-cli = "latest"
 direnv = "latest"
 helm = "latest"
 k9s = "latest"
@@ -6,3 +7,4 @@ kubectl = "latest"
 kubens = "latest"
 python = "3.12"
 uv = "latest"
+vault = "latest"
